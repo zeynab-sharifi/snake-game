@@ -1,7 +1,38 @@
 const snakGame =document.getElementById("snak");
 const ctx = snakGame.getContext('2d');
 
+let changingDir=false;
 
+document.addEventListener('keydown', changeDir)
+
+function changeDir(event){
+    const Left_Key = 37;
+    const Right_Key = 39;
+    const Up_key = 38;
+    const Down_key = 40;
+
+    if(changingDir) return;
+    changingDir=true;
+
+    const keyPressed = event.keyCode;
+    if(keyPressed===Left_Key && dx!==10){
+        dx= -10;
+        dy=0;
+    }
+    if(keyPressed===Right_Key && dx!==-10){
+        dx=10;
+        dy=0;
+    }
+    if(keyPressed===Up_key && dy!==10){
+        dx=0;
+        dy=-10;
+    }
+    if(keyPressed===Down_key && dy!==-10){
+        dx=0;
+        dy=10;
+    }
+    
+}
 
 let snake = [
     {x:150,y:150},
@@ -14,8 +45,12 @@ let snake = [
 let foodX;
 let foodY;
 
+let dx=10;
+let dy=0;
+
 function main(){
     setTimeout(() => {
+        changingDir=false;
         clearCanvas();
         drowFood();
         advanceSnake();
@@ -47,7 +82,7 @@ let createfood = () =>{
 }
 
 let advanceSnake = () =>{
-    const head={x:snake[0].x+10,y:snake[0].y}
+    const head={x:snake[0].x + dx , y:snake[0].y + dy}
 
     snake.unshift(head);
     snake.pop();
