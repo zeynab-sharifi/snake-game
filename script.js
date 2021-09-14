@@ -45,6 +45,8 @@ let snake = [
 let foodX;
 let foodY;
 
+let score=0;
+
 let dx=10;
 let dy=0;
 
@@ -85,7 +87,16 @@ let advanceSnake = () =>{
     const head={x:snake[0].x + dx , y:snake[0].y + dy}
 
     snake.unshift(head);
-    snake.pop();
+    if(head.x===foodX && head.y=== foodY){
+        score += 10;
+
+        document.getElementById('scorre').innerHTML = score;
+        createfood();
+    }else{
+        snake.pop();
+    }
+
+    
 }
 
 let drowSnake = () =>snake.forEach(drowSnakePart)
