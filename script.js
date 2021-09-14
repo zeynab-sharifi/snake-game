@@ -3,8 +3,26 @@ const ctx = snakGame.getContext('2d');
 
 let changingDir=false;
 
-document.addEventListener('keydown', changeDir)
+let snake = [
+    {x:150,y:150},
+    {x:140,y:150},
+    {x:130,y:150},
+    {x:120,y:150},
+    {x:110,y:150},
+]
+//food location
+let foodX;
+let foodY;
 
+//snak path
+let score=0;
+//game score
+
+let dx=10;
+let dy=0;
+
+
+document.addEventListener('keydown', changeDir)
 function changeDir(event){
     const Left_Key = 37;
     const Right_Key = 39;
@@ -34,24 +52,10 @@ function changeDir(event){
     
 }
 
-let snake = [
-    {x:150,y:150},
-    {x:140,y:150},
-    {x:130,y:150},
-    {x:120,y:150},
-    {x:110,y:150},
-]
-
-let foodX;
-let foodY;
-
-let score=0;
-
-let dx=10;
-let dy=0;
-
+//run 
 function main(){
     setTimeout(() => {
+        if(finishGame()) return;
         changingDir=false;
         clearCanvas();
         drowFood();
@@ -61,7 +65,22 @@ function main(){
         main()
     }, 100);
 }
+// function finish game
+function finishGame(){
+    for(let i=1; i<snake.length;i++){
+        if(snake[0].x === snake[i].x && snake[0].y === snake[i].y)return true;
 
+    }
+    
+    const leftWall = snake[0].x<0;
+    const righttWall = snake[0].x>snakGame.width -10;
+    const toptWall = snake[0].y<0;
+    const bottomWall = snake[0].y>snakGame.height -10;
+
+    return leftWall || righttWall || toptWall || bottomWall;
+}
+
+//canvas snake game
 let clearCanvas = ()=>{
     ctx.fillStyle = '#121212'
     ctx.strokeStyle='#000'
@@ -71,7 +90,7 @@ let clearCanvas = ()=>{
 
 }
 
-
+// create random food
 let randomNumber=(max,min)=> Math.round((Math.random()*(max - min)+min)/10)*10
 let createfood = () =>{
      foodX = randomNumber(0,snakGame.width -10);
